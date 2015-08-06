@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Range of Even number</title>
+</head>
+<body>
+
+    <h1>Check out the range of even number.</h1>
+    <input type="number" name="" id="number">
+    <input type="number" name="" id="num">
+
+    <button onclick="myFunction()">submit</button>
+    
+    <p id="text"></p>
+
+
+    <script type="text/javascript">
+    
+        function myFunction(){
+            var minRange = document.getElementById("number").value;
+            var maxRange = document.getElementById("num").value;
+            var x = "";
+
+            for(var i = minRange ; i < maxRange ; i++ ) {
+
+                if(i % 2 === 0) {
+                    x = x + i + "<br>";
+                    document.getElementById("text").innerHTML = "From" + "\t" + minRange + "\t" +"to" + "\t" +maxRange + "\t" + "the even number is :" + "<br>" + x ;
+                }
+            }
+
+        }
+
+    </script>
+</body>
+</html>

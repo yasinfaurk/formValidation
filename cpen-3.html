@@ -1,0 +1,184 @@
+<html>
+  <body>
+    <div id="Calc">
+      <div id="Display">
+      </div>
+      <div id="InputWrapper">
+        <a href="javascript:calc.display('MC');" class="button">
+          MC
+        </a>
+        <a href="javascript:calc.display('MR');" class="button">
+          MR
+        </a>
+        <a class="button">
+          MS
+        </a>
+        <a class="button">
+          M+
+        </a>
+        <a class="button">
+          M-
+        </a>
+        <a class="button">
+          &lt;-
+        </a>
+        <a class="button" href="javascript:calc.clear();">
+          CE
+        </a>
+        <a class="button" href="javascript:calc.clear();">
+          C
+        </a>
+        <a class="button">
+          &plusmn;
+        </a>
+        <a class="button">
+          &Sqrt;
+        </a>
+        <a class="button" href="javascript:calc.append('7');">
+          7
+        </a>
+        <a class="button" href="javascript:calc.append('8');">
+          8
+        </a>
+        <a class="button" href="javascript:calc.append('9');">
+          9
+        </a>
+        <a class="button" href="javascript:calc.append('/');">
+          /
+        </a>
+        <a class="button" href="javascript:calc.append('%');">
+          %
+        </a>
+        <a class="button" href="javascript:calc.append('4');">
+          4
+        </a>
+        <a class="button" href="javascript:calc.append('5');">
+          5
+        </a>
+        <a class="button" href="javascript:calc.append('6');">
+          6
+        </a>
+        <a class="button" href="javascript:calc.append('*');">
+          *
+        </a>
+        <a class="button">
+          1/x
+        </a>
+        <a class="button" href="javascript:calc.append('1');">
+          1
+        </a>
+        <a class="button" href="javascript:calc.append('2');">
+          2
+        </a>
+        <a class="button" href="javascript:calc.append('3');">
+          3
+        </a>
+        <a class="button" href="javascript:calc.append('-');">
+          -
+        </a>
+        <a class="button" href="javascript:calc.append('^');">
+          ^
+        </a>
+        <a class="button large" href="javascript:calc.append('0');">
+          0
+        </a>
+        <a class="button" href="javascript:calc.append('.');">
+          .
+        </a>
+        <a class="button" href="javascript:calc.append('+');">
+          +
+        </a>
+        <a class="button" href="javascript:calc.solve();">
+          =
+        </a>
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var calc = new function() {  
+  this.equation = "";
+  
+  this.display = function (value) {
+    $('#Display').text(value);
+  };
+  
+  this.append = function (value) {
+    this.equation += value;
+    this.display(this.equation);
+  };
+  
+  // Replaces eval(); 
+  this.calculate = function (input){
+    var f = { add : '+'
+            , sub : '-' 
+            , div : '/'
+            , mlt : '*'
+            , mod : '%'
+            , exp : '^' };
+    
+    // Create array for Order of Operation and precedence
+    f.ooo = [[ [f.mlt] , [f.div] , [f.mod] , [f.exp] ],
+            [ [f.add] , [f.sub] ]];
+
+    input = input.replace(/[^0-9%^*\/()\-+.]/g,'');           // clean up unnecessary characters
+
+    var output;
+    for(var i=0, n=f.ooo.length; i<n; i++ ){
+       
+    // Regular Expression to look for operators between floating numbers or integers
+    var re = new RegExp('(\\d+\\.?\\d*)([\\'+f.ooo[i].join('\\')+'])(\\d+\\.?\\d*)');
+    // be cautious and reset re start pos
+    re.lastIndex = 0;
+      
+    // Loop while there is still calculation for level of precedence
+    while( re.test(input) ){
+      //document.write('<div>' + input + '</div>');
+      output = this.calc_internal(RegExp.$1,RegExp.$2,RegExp.$3);
+      if (isNaN(output) || !isFinite(output)) return output;   // exit early if not a number
+        input  = input.replace(re,output);
+      }
+   }
+
+   return output;
+  }
+  
+  this.calc_internal = function (a,op,b){
+    var f = { add : '+'
+            , sub : '-' 
+            , div : '/'
+            , mlt : '*'
+            , mod : '%'
+            , exp : '^' };
+    
+    // Create array for Order of Operation and precedence
+    f.ooo = [[ [f.mlt] , [f.div] , [f.mod] , [f.exp] ],
+            [ [f.add] , [f.sub] ]];
+    
+    a=a*1; b=b*1;
+    switch(op){
+      case f.add: return a+b; break;
+      case f.sub: return a-b; break;
+      case f.div: return a/b; break;
+      case f.mlt: return a*b; break;
+      case f.mod: return a%b; break;
+      case f.exp: return Math.pow(a,b); break;
+      default: null;
+    }
+  }
+
+  this.solve = function (value) {
+    var result = this.calculate(this.equation);
+    //this.display(result);
+    this.display(result);
+    this.equation = "";
+  };
+  
+  this.clear = function () {
+    this.display('');
+    this.equation = "";
+  };
+};
+    </script>
+  </body>
+</html>

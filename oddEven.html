@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Odd & Even</title>
+</head>
+<body>
+
+    <h1>Check Odd or Even number .</h1>
+    <input type="text" name="" id="number">
+    <button onclick="myFunction()">submit</button>
+
+    <p id="text"></p>
+
+
+    <script type="text/javascript">
+    function myFunction(){
+        var num = document.getElementById("number").value;
+        numI = parseInt(num);
+
+        if(isNaN(numI)){
+            document.getElementById("text").innerHTML = "Please enter a number";
+        }
+        else if(numI == 0){
+            document.getElementById("text").innerHTML = "You entered " + "\t" + numI;
+        }
+        else if(numI % 2 === 0){
+            document.getElementById("text").innerHTML = numI + "\t "+ " is an even number.";
+        }
+        else{
+            document.getElementById("text").innerHTML = numI + "\t "+ " is an odd number.";
+        }
+    }
+    </script>
+</body>
+</html>

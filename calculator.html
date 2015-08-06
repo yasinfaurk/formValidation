@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var renderer, scene, camera, light;
+
+var ww = window.innerWidth,
+  wh = window.innerHeight;
+
+var opt = {
+  totalAsteroids: 100,
+  speedRatio: .4
+};
+
+function init() {
+
+  renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('scene'),
+    alpha: true
+  });
+  renderer.setSize(ww, wh);
+
+  scene = new THREE.Scene();
+
+  camera = new THREE.PerspectiveCamera(50, ww / wh, 1, 20000);
+  camera.position.set(0, 0, 900);
+  scene.add(camera);
+
+  var directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
+  directionalLight.position.set(0, 0, 1200);
+  scene.add(directionalLight);
+
+  var hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, .5);
+  scene.add(hemisphereLight);
+
+  createSuns();
+
+  createAsteroids();
+
+  render();
+
+  window.addEventListener("mousemove", function(e) {
+    opt.speedRatio = (e.clientX - (ww / 2)) / ww + .5;
+    opt.speedRatio = (e.clientX / ww) * 2 - 1;
+  });
+
+}
+
+var sunsPosition = [
+  [0, 200, 0],
+  [0, -200, 0],
+  [200, 0, 0],
+  [-200, 0, 0],
+  [300, 300, 0],
+  [300, -300, 0],
+  [-300, 300, 0],
+  [-300, -300, 0]
+];
+var createSuns = function() {
+
+  suns = new THREE.Object3D();
+  scene.add(suns);
+
+  for (var i = 0; i < 8; i++) {
+    var geometry = new THREE.SphereGeometry(50, 24, 24);
+    var material = new THREE.MeshPhongMaterial({
+      emissive: 0Xffffff
+    });
+    var sun = new THREE.Mesh(geometry, material);
+    sun.position.set(sunsPosition[i][0], sunsPosition[i][1], sunsPosition[i][2]);
+
+    suns.add(sun);
+
+    var light = new THREE.PointLight(0XFFFFFF, .3, 900);
+    suns.add(light);
+  }
+
+};
+
+var colors = [0XF4C284, 0XBF3B58, 0XF5A286, 0XF06363];
+var createAsteroids = function() {
+
+  asteroids = new THREE.Object3D();
+  for (var i = 0; i < opt.totalAsteroids; i++) {
+
+    var geometry = new THREE.SphereGeometry(20, 16, 16);
+    var material = new THREE.MeshLambertMaterial({
+      color: colors[Math.floor(Math.random() * 4)],
+    });
+    asteroid = new THREE.Mesh(geometry, material);
+
+    asteroid.applyMatrix(new THREE.Matrix4().makeTranslation(0, Math.random() * 1000 + 80, 0));
+    asteroid.applyMatrix(new THREE.Matrix4().makeRotationZ(Math.random() * (Math.PI * 2)));
+
+    asteroid.speedZ = ((Math.random() * 2) - 1) / 20;
+    asteroid.speedY = ((Math.random() * 2) - 1) / 20;
+    asteroid.speedX = ((Math.random() * 2) - 1) / 20;
+
+    asteroids.add(asteroid);
+  }
+  scene.add(asteroids);
+
+};
+
+var opacity = 0,
+  counter = 1;
+var render = function(a) {
+  requestAnimationFrame(render);
+
+  for (var i = 0; i < opt.totalAsteroids; i++) {
+    var asteroid = asteroids.children[i];
+    asteroid.applyMatrix(new THREE.Matrix4().makeRotationZ(asteroid.speedZ * opt.speedRatio));
+    asteroid.applyMatrix(new THREE.Matrix4().makeRotationY(asteroid.speedY * opt.speedRatio));
+    asteroid.applyMatrix(new THREE.Matrix4().makeRotationX(asteroid.speedX * opt.speedRatio));
+  }
+
+  suns.rotation.x += .05 * opt.speedRatio;
+  suns.rotation.y += .04 * opt.speedRatio;
+
+  asteroids.rotation.y += .07 * opt.speedRatio;
+
+  renderer.render(scene, camera);
+};
+
+init();
+    </script>
+</body>
+</html>

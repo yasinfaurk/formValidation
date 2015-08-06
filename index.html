@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<body>
+
+<p>Creating a JavaScript Object.</p>
+
+<p id="text"></p>
+
+<script>
+var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+var y = "";
+  for(x in person){
+    // document.getElementById("text").innerHTML += (x+"=>"+person[x]+"<br/>") ;
+    y = y + x + "=" + person[x]+ "<br>";
+    document.getElementById("text").innerHTML = y;
+  }
+
+</script>
+
+</body>
+</html>

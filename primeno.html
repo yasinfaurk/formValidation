@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+        Prime Numbers
+        </title>
+    </head>
+<body>
+
+    <h1>Enter number to check prime number.</h1>
+    
+    <input type="text" id="number" name="" value="" placeholder="">
+    <button type="button" onclick="myFunction()">submit</button>
+    <p id="text"></p>
+
+
+
+    <script language="javascript">
+        // var n,i,r;
+        // var  n=window.prompt("Enter a natural number");
+        // var  i=2;
+        // var j=3;
+
+        
+
+        function myFunction(){
+
+            var n = document.getElementById("number").value;
+            var i = 2;
+            var j = parseInt(i);
+
+            if (n%i === 0){
+            document.getElementById("text").innerHTML = n + "\t" + "is a composite number";
+        }
+        
+            else{
+                document.getElementById("text").innerHTML = n +"\t"+"is a prime number";
+            }
+        }
+            
+        
+        
+    </script>
+        

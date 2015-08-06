@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Data search</title>
+   </head>
+   <body>
+      <input type="text" name="" id="inputData" value="" placeholder="">
+      <button type="button" onclick="myFunction()">search</button>
+      <p id="text"></p>
+      <script type="text/javascript">
+         function myFunction(){
+          var data = [1, 2, 3, 4, 5, "name", "email", "id", "password", "position", "ct", "mentor", "coders trust"];
+          var iData = document.getElementById("inputData").value;
+         
+          for(var i = 0; i <= data.length; i++){
+             
+              if(iData == data[i]){
+         
+                  document.getElementById("text").innerHTML = iData + "\t" +"is available in array data.";
+                  return;
+              }else{
+         
+                   document.getElementById("text").innerHTML = iData + "\t" +"is not available in array data.";
+              }
+          }
+         }
+      </script>
+   </body>
+</html>
